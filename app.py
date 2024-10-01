@@ -59,7 +59,7 @@ if uploaded_file:
         original_image = original_image.convert('RGBA')
 
     # Allow user to pick masking color and opacity
-    mask_color = st.color_picker("Pick a mask color", "#000000")    # Default black mask
+    mask_color = st.color_picker("Pick a mask color", "#FFFF00")    # Default black mask
     opacity = st.slider("Select mask opacity", 0.0, 1.0, 1.0)       # Default opacity is 100%
     rgba_color = mask_color + hex(int(opacity * 255))[2:].zfill(2)
 
