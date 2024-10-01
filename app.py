@@ -16,7 +16,7 @@ st.markdown(
 
 # Streamlit app title
 st.title("CloakDocs")
-st.subheader("A Web App for Masking Sensitive Information in Images")
+st.subheader("A Web App for Masking Information in Images")
 
 # Links to GitHub and LinkedIn
 st.markdown(
