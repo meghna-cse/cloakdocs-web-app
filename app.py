@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from io import BytesIO
+import math
 
 st.markdown(
     """
@@ -38,14 +39,24 @@ uploaded_file = st.file_uploader("Choose an image (JPG, JPEG, PNG)...", type=["j
 if uploaded_file:
     # Open the uploaded image file
     original_image = Image.open(uploaded_file)
+    img_width, img_height = original_image.size
 
     # Display the original image
     st.image(original_image, caption='Original Image', use_column_width=True)
+    
+    # Get the widths for the masking canvas
+    #page_width = st._config.get_option("browser.gatherUsageStats")
+    #container_width = st.beta_container().empty().element_width or 700  # default to 700px if not available
+    #scale_factor = container_width / img_width      # Calculate the scaling factor
+    default_width = 700
+    scale_factor = default_width / img_width
+
+    # Masking canvas's dimensions based on the scaling factor
+    canvas_width = int(img_width * scale_factor)
+    canvas_height = int(img_height * scale_factor)
 
     if original_image.mode != 'RGBA':
         original_image = original_image.convert('RGBA')
-
-    img_width, img_height = original_image.size
 
     # Allow user to pick masking color and opacity
     mask_color = st.color_picker("Pick a mask color", "#000000")    # Default black mask
@@ -59,8 +70,8 @@ if uploaded_file:
         stroke_width=0,                     # No outline/stroke
         stroke_color="rgba(0, 0, 0, 0)",    # Transparent stroke color
         background_image=original_image,    # Setting the original image as the canvas background
-        height=img_height,                  # Set canvas height to match the image height
-        width=img_width,                    # Set canvas width to match the image width
+        height=canvas_height,
+        width=canvas_width,
         drawing_mode="rect",                # Drawing rectangles for masking
         key="canvas",
     )
@@ -71,7 +82,8 @@ if uploaded_file:
         canvas_mask = Image.fromarray(canvas_result.image_data.astype('uint8'), 'RGBA')
 
         # Composite the canvas mask over the original image
-        masked_image = Image.alpha_composite(original_image, canvas_mask)
+        canvas_mask_resized = canvas_mask.resize(original_image.size)
+        masked_image = Image.alpha_composite(original_image, canvas_mask_resized)
 
         # Display the final masked image in the app
         st.image(masked_image, caption="Masked Image", use_column_width=True)
