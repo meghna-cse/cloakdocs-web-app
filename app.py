@@ -72,7 +72,7 @@ if uploaded_file:
         fill_color=rgba_color,              # Mask color with opacity
         stroke_width=0,                     # No outline/stroke
         stroke_color="rgba(0, 0, 0, 0)",    # Transparent stroke color
-        background_image=original_image,    # Setting the original image as the canvas background
+        background_image=original_image_for_canvas,    # Setting the original image as the canvas background
         height=canvas_height,
         width=canvas_width,
         drawing_mode="rect",                # Drawing rectangles for masking
