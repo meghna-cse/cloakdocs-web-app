@@ -1,6 +1,6 @@
 # cloakdocs-web-app
 
-This project is a web application built using **Streamlit** that allows users to upload images, draw masks on them, and download the masked images. The application supports common image formats like JPG, JPEG, and PNG.
+This project is a web application built using **Streamlit** that allows users to upload images, draw masks on them, and download masked images. The application supports common image formats like JPG, JPEG, and PNG.
 
 ## 🚀 Features
 
@@ -13,7 +13,9 @@ This project is a web application built using **Streamlit** that allows users to
 
 ## 🖥 Demo
 
-You can access the live application here: [Live Demo](https://your-streamlit-app-link)
+Recorded Demo: [YouTube Link](https://youtu.be/63wsoC6SDwg)
+
+You can access the live application here, just working out a few kinks at the moment: [Live Demo](https://your-streamlit-app-link)
 
 ## 💻 Local Setup and Installation
 
