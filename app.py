@@ -3,6 +3,7 @@ from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from io import BytesIO
 import base64
+import time
 
 # Function to encode the image to Base64
 def encode_image(image: Image.Image) -> str:
@@ -85,6 +86,9 @@ if uploaded_file:
     # Encode and then decode the image for the canvas
     encoded_image = encode_image(original_image_for_canvas)
     decoded_image = decode_image(encoded_image)
+
+    # Add a small delay (e.g., 0.5 seconds)
+    time.sleep(0.5)  
 
     canvas_result = st_canvas(
         fill_color=rgba_color,  # Mask color with opacity
