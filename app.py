@@ -3,6 +3,7 @@ from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from io import BytesIO
 import base64
+import time
 
 # Function to encode the image to Base64
 def encode_image(image: Image.Image) -> str:
@@ -60,14 +61,14 @@ uploaded_file = st.file_uploader("Choose an image (JPG, JPEG, PNG)...", type=["j
 if uploaded_file:
     # Open the uploaded image file
     original_image = Image.open(uploaded_file)
-    image_bytes = get_image_bytes(original_image)  # Get the image as bytes to avoid external file paths
+    image_bytes = get_image_bytes(original_image)  # Get the image as bytes
     img_width, img_height = original_image.size
 
-    # Display the original image
+    # Display the original image using the in-memory bytes
     st.image(image_bytes, caption='Original Image', use_column_width=True) 
 
-    # Get the widths for the masking canvas
-    original_image_for_canvas = Image.open(image_bytes)  # Convert the image bytes to PIL Image for background use in the canvas
+    # Get the dimensions for the masking canvas
+    original_image_for_canvas = Image.open(image_bytes) 
     default_width = 700
     scale_factor = default_width / img_width
 
@@ -76,24 +77,36 @@ if uploaded_file:
     canvas_height = int(img_height * scale_factor)
 
     # Allow user to pick masking color and opacity
-    mask_color = st.color_picker("Pick a mask color", "#000000")  # Default black mask
-    opacity = st.slider("Select mask opacity", 0.0, 1.0, 1.0)  # Default opacity is 100%
+    mask_color = st.color_picker("Pick a mask color", "#000000") 
+    opacity = st.slider("Select mask opacity", 0.0, 1.0, 1.0)  
     rgba_color = mask_color + hex(int(opacity * 255))[2:].zfill(2)
 
     st.write("Draw on the image to apply masking. The canvas size is dynamically set based on the uploaded image size:")
 
-    # Encode and then decode the image for the canvas
+    # Encode the image to Base64
     encoded_image = encode_image(original_image_for_canvas)
+
+    # Decode the Base64 image back to a PIL Image object
     decoded_image = decode_image(encoded_image)
 
+    # Print the decoded image format and size
+    st.write(f"Decoded Image Format: {decoded_image.format}, Size: {decoded_image.size}")  
+
+    # Store BOTH the encoded and decoded images in session state
+    st.session_state.encoded_image = encoded_image
+    st.session_state.decoded_image = decode_image(encoded_image)  
+
+    # Add a small delay 
+    time.sleep(0.5)  
+
     canvas_result = st_canvas(
-        fill_color=rgba_color,  # Mask color with opacity
-        stroke_width=0,  # No outline/stroke
-        stroke_color="rgba(0, 0, 0, 0)",  # Transparent stroke color
-        background_image=decoded_image,  # Using the decoded image object
+        fill_color=rgba_color,  
+        stroke_width=0,  
+        stroke_color="rgba(0, 0, 0, 0)",  
+        background_image=st.session_state.decoded_image, # Use the image from session state
         height=canvas_height,
         width=canvas_width,
-        drawing_mode="rect",  # Drawing rectangles for masking
+        drawing_mode="rect",  
         key="canvas",
     )
 
