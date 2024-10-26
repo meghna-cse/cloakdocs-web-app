@@ -1,0 +1,36 @@
+# Node.js dependencies (for backend and frontend)
+cloakdocs-backend/node_modules/
+cloakdocs-frontend/node_modules/
+
+# Build output (for frontend)
+cloakdocs-frontend/build/
+
+# Environment and sensitive files
+cloakdocs-backend/.env
+cloakdocs-frontend/.env
+.DS_Store
+
+# Logs
+logs/
+*.log
+cloakdocs-backend/logs/
+cloakdocs-frontend/logs/
+
+# Temporary files
+uploads/
+
+# IDE and editor-related files
+.vscode/
+.idea/
+
+# OS generated files
+Thumbs.db
+
+# Other potential temporary or local files
+*.local
+cloakdocs-backend/npm-debug.log*
+cloakdocs-frontend/npm-debug.log*
+cloakdocs-backend/yarn-debug.log*
+cloakdocs-frontend/yarn-debug.log*
+cloakdocs-backend/yarn-error.log*
+cloakdocs-frontend/yarn-error.log*
